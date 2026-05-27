@@ -24,7 +24,7 @@ public class QuestScreen extends Screen {
         int centerY = this.height / 2;
 
         // Tombol Accept
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Accept"), button -> {
+        this.addDrawableSelectableElement(ButtonWidget.builder(Text.literal("Accept"), button -> {
             if (MinecraftClient.getInstance().player != null) {
                 PlayerQuestManager.setQuest(MinecraftClient.getInstance().player, offeredQuest);
             }
@@ -32,14 +32,14 @@ public class QuestScreen extends Screen {
         }).dimensions(centerX - 110, centerY + 30, btnWidth, btnHeight).build());
 
         // Tombol Decline
-        this.addDrawableChild(ButtonWidget.builder(Text.literal("Decline"), button -> {
+        this.addDrawableSelectableElement(ButtonWidget.builder(Text.literal("Decline"), button -> {
             this.close();
         }).dimensions(centerX + 10, centerY + 30, btnWidth, btnHeight).build());
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context, mouseX, mouseY, delta); // Background gelap layar
+        this.renderBackground(context); // Background gelap layar
         
         int centerX = this.width / 2;
         int centerY = this.height / 2;

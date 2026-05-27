@@ -1,14 +1,36 @@
 package com.example.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import com.example.quest.PlayerQuestManager;
 import com.example.quest.Quest;
+import com.example.quest.QuestGenerator;
+import com.example.client.gui.QuestScreen;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.ActionResult;
 
 public class ExampleModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        // Event Klik Kanan Villager
+        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (world.isClient() && player.isSneaking()) {
+                // Check if entity is a Villager (basic check by entity type name)
+                if (entity.getType().toString().contains("villager")) {
+                    // Jangan paksa buka UI jika player sudah punya quest
+                    if (PlayerQuestManager.getQuest(player) == null) {
+                        Quest newQuest = QuestGenerator.generateRandomQuest();
+                        MinecraftClient.getInstance().setScreen(new QuestScreen(newQuest));
+                        return ActionResult.SUCCESS;
+                    }
+                }
+            }
+            return ActionResult.PASS;
+        });
+
+        // HUD Rendering untuk Quest Tracker
         HudRenderCallback.EVENT.register((context, tickDelta) -> {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.player != null) {
