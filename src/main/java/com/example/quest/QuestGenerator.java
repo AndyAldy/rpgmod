@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import java.util.Random;
+import net.minecraft.item.Item;
 
 public class QuestGenerator {
     private static final Random RANDOM = new Random();

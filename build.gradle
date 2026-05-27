@@ -1,17 +1,7 @@
-buildscript {
-	repositories {
-		maven { url 'https://maven.fabricmc.net/' }
-		mavenCentral()
-		gradlePluginPortal()
-	}
-	dependencies {
-		classpath "net.fabricmc:fabric-loom:${loom_version}"
-	}
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'maven-publish'
 }
-
-apply plugin: 'fabric-loom'
-apply plugin: 'maven-publish'
-
 version = project.mod_version
 group = project.mavenGroup
 
@@ -36,14 +26,10 @@ loom {
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	
-	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	
+	add("mappings", "net.fabricmc:yarn:${project.yarn_mappings}:v2")
+	add("modImplementation", "net.fabricmc:fabric-loader:${project.loader_version}")
+	add("modImplementation", "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}")
 }
 
 processResources {
